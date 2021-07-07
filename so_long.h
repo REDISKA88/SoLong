@@ -20,6 +20,10 @@ typedef struct s_game
 {
 	void	*mlx;
 	void	*win;
+	int 	pos_x;
+	int 	pos_y;
+	int 	coins;
+	int 	p_mov;
 }				t_game;
 
 typedef struct s_hooks
@@ -32,14 +36,50 @@ typedef struct s_hooks
 	char	**map;
 }				t_hooks;
 
+typedef struct s_xpm_p
+{
+	int		*height;
+	int		*width;
+	void	*img;
+}				t_xpm_p;
+
+typedef struct s_xpm_e
+{
+	int		*height;
+	int		*width;
+	void	*img;
+}				t_xpm_e;
+
+typedef struct s_xpm_c
+{
+	int		*height;
+	int		*width;
+	void	*img;
+}				t_xpm_c;
+
+typedef struct s_xpm_w
+{
+	int		*height;
+	int		*width;
+	void	*img;
+}				t_xpm_w;
+
+typedef struct s_xpm_g
+{
+	int		*height;
+	int		*width;
+	void	*img;
+}				t_xpm_g;
+
 typedef struct s_xpm
 {
-	int map_e;
-	int map_p;
-	int map_c;
-	int width;
-	int height;
-	char	**map;
+	int		*height;
+	int		*width;
+	t_xpm_c	coin;
+	t_xpm_e	exit;
+	t_xpm_w wall;
+	t_xpm_g grass;
+	t_xpm_p	player;
 }				t_xpm;
 
 typedef struct s_map
@@ -61,12 +101,12 @@ void	ft_count_epc(char map, t_map *mp);
 void	ft_check_epc(t_map *mp);
 void	ft_border_checker(t_map *mp);
 void ft_start_game(t_map *mp, t_game *game);
+void	ft_create_xpm(t_xpm *xp, t_game *game);
 
 
 
 
-
-
+void	ft_end_game(t_game *game);
 void	check_size(t_map *mp);
 
 
