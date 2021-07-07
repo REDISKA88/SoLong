@@ -3,18 +3,7 @@ void	ft_putchar(char c)
 {
 	write(1, &c, 1);
 }
-void	ft_free_array(char **temp)
-{
-	int	i;
 
-	i = 0;
-	while (temp[i])
-	{
-		free(temp[i]);
-		i++;
-	}
-	free(temp);
-}
 int	ft_strlen(const char *s)
 {
 	int	len;
@@ -72,6 +61,7 @@ char	*ft_strdup(const char *str)
 	dst[len] = '\0';
 	return (dst);
 }
+
 void	*ft_memcpy(void *dst, const void *src, int num)
 {
 	char		*edst;

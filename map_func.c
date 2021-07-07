@@ -1,6 +1,5 @@
 #include "so_long.h"
-
-int	ft_maplines(char *argv1, t_map *mp)
+int	ft_maplines(char *argv1, t_game *game)
 {
 	int		fd;
 	int		size;
@@ -17,36 +16,66 @@ int	ft_maplines(char *argv1, t_map *mp)
 	}
 	free(line);
 	close(fd);
-	mp->height = size + 1;
-	return (mp->height);
+	game->height = size + 1;
+	return (game->height);
 }
 
-void ft_create_map2(t_map *mp, char *argv1)
+void	ft_create_map2(t_game *game, char *argv1)
 {
 	int i;
 	int fd;
 	char *line;
 
 	i = 0;
-	mp->map = malloc(ft_maplines(argv1, mp) * sizeof(char *));
+	game->map = malloc(ft_maplines(argv1, game) * sizeof(char *));
 	fd = open(argv1, O_RDONLY);
 	if (fd == -1)
 		ft_errors(2);
 	while (get_next_line(fd, &line) > 0)
 	{
-		mp->map[i] = line;
-		mp->width = ft_stlen(mp->map[i]);
-		ft_check_symb(mp, mp->map[i]);
+		game->map[i] = line;
+		game->width = ft_stlen(game->map[i]);
+		ft_check_symb(game, game->map[i]);
 		i++;
 	}
-	mp->map[i] = line;
-	ft_check_symb(mp, mp->map[i]);
+	game->map[i] = line;
+	ft_check_symb(game, game->map[i]);
 	free(line);
-	if (!mp->map)
+	if (!game->map)
 		ft_errors(3);
-	check_size(mp);
-	ft_check_epc(mp);
-	ft_border_checker(mp);
-	ft_check_up_bord(mp);
+	check_size(game);
+	ft_check_epc(game);
+	ft_border_checker(game);
+	ft_check_up_bord(game);
 	close(fd);
+}
+
+void	ft_check_symb(t_game *game, char *mapi)
+{
+	int c;
+
+	c = 0;
+	while (mapi[c])
+	{
+		if (str_char("01CEP", mapi[c]) == 0)
+		{
+			write(1, "map valid error", 15);
+			exit(1);
+		}
+		ft_count_epc(mapi[c],game);
+		c++;
+	}
+}
+
+void	ft_free_array(char **temp)
+{
+	int	i;
+
+	i = 0;
+	while (temp[i])
+	{
+		free(temp[i]);
+		i++;
+	}
+	free(temp);
 }
