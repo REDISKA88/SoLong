@@ -77,8 +77,8 @@ void	ft_check_up_bord(t_game *game)
 	int i;
 	int j;
 
-	i = game->height;
 	j = 0;
+	i = game->height;
 	while (game->map[i][j])
 	{
 		if (game->map[i][j] != '1')

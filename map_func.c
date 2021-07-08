@@ -16,7 +16,7 @@ int	ft_maplines(char *argv1, t_game *game)
 	}
 	free(line);
 	close(fd);
-	game->height = size + 1;
+	game->height = size;
 	return (game->height);
 }
 
@@ -34,11 +34,17 @@ void	ft_create_map2(t_game *game, char *argv1)
 	while (get_next_line(fd, &line) > 0)
 	{
 		game->map[i] = line;
+		if (str_char(game->map[i], 'P') == 1)
+		{
+			game->pos_y = i;
+		}
 		game->width = ft_stlen(game->map[i]);
 		ft_check_symb(game, game->map[i]);
 		i++;
 	}
 	game->map[i] = line;
+	if (str_char(game->map[i], 'P') == 1)
+		game->pos_y = i;
 	ft_check_symb(game, game->map[i]);
 	free(line);
 	if (!game->map)
@@ -62,6 +68,11 @@ void	ft_check_symb(t_game *game, char *mapi)
 			write(1, "map valid error", 15);
 			exit(1);
 		}
+		if (mapi[c] == 'P')
+		{
+			game->pos_x = c;
+		}
+
 		ft_count_epc(mapi[c],game);
 		c++;
 	}
