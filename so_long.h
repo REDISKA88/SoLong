@@ -83,6 +83,7 @@ void	ft_put_exit_img(t_xpm_e *exit, t_xpm_g *grass, t_game *game);
 int		main(int argc, char **argv);
 void	ft_errors(int code);
 void	ft_init(t_game *game);
+void	ft_check_kind(char *argv);
 void	check_size(t_game *game);
 void	ft_check_epc(t_game *game);
 void	ft_border_checker(t_game *game);

@@ -38,7 +38,7 @@ void	ft_press_a(t_game *game)
 		|| (game->map[game->pos_y][game->pos_x - 1] == 'E'
 			&& game->count_coins != game->map_c))
 		return ;
-	else if (game->map[game->pos_y][game->pos_x -1] == 'C')
+	else if (game->map[game->pos_y][game->pos_x - 1] == 'C')
 	{
 		game->count_coins = game->count_coins + 1;
 		game->map[game->pos_y][game->pos_x - 1] = '0';

@@ -8,9 +8,10 @@ void	ft_start_game(t_game *game)
 	ft_create_xpm_g(&game->xpm_grass, game);
 	ft_create_xpm_e(&game->xpm_exit, game);
 	game->win = mlx_new_window(game->mlx, game->width * 32,
-			game->height *32, "SO_LONG");
+			game->height * 32, "SO_LONG");
 	mlx_hook(game->win, 2, 1L << 0, key_hook, game);
 	mlx_hook(game->win, 33, 1L << 5, end_game, game);
+	mlx_hook(game->win, 17, 1L << 5, end_game, game);
 	game->count_coins = 0;
 	game->p_mov = 0;
 	mlx_loop_hook(game->mlx, display2, game);
