@@ -21,9 +21,25 @@ void	ft_errors(int code)
 		write(1, "border error width", 18);
 		exit(1);
 	}
+	else
+		ft_errors2(code);
+}
+
+void	ft_errors2(int code)
+{
 	if (code == 5)
 	{
 		write(1, "border up/down error", 20);
+		exit(1);
+	}
+	if (code == 6)
+	{
+		write(1, "valid map fail", 14);
+		exit(1);
+	}
+	if (code == 7)
+	{
+		write(1, "load xpm fail", 14);
 		exit(1);
 	}
 }

@@ -22,60 +22,58 @@ int	ft_maplines(char *argv1, t_game *game)
 
 void	ft_create_map2(t_game *game, char *argv1)
 {
-	int i;
-	int fd;
-	char *line;
+	int		i;
+	int		fd;
+	char	*line;
 
 	i = 0;
-	game->map = malloc(ft_maplines(argv1, game) * sizeof(char *));
+	game->map = malloc((ft_maplines(argv1, game) + 1) * sizeof(char *));
 	fd = open(argv1, O_RDONLY);
 	if (fd == -1)
 		ft_errors(2);
 	while (get_next_line(fd, &line) > 0)
 	{
 		game->map[i] = line;
-		if (str_char(game->map[i], 'P') == 1)
-		{
-			game->pos_y = i;
-		}
 		game->width = ft_stlen(game->map[i]);
-		ft_check_symb(game, game->map[i]);
 		i++;
 	}
 	game->map[i] = line;
-	if (str_char(game->map[i], 'P') == 1)
-		game->pos_y = i;
-	ft_check_symb(game, game->map[i]);
 	free(line);
 	if (!game->map)
+	{
 		ft_errors(3);
-	check_size(game);
-	ft_check_epc(game);
-	ft_border_checker(game);
-	ft_check_up_bord(game);
+		ft_free_array(game->map);
+	}
+	ft_valid_map(game);
 	close(fd);
 }
 
-void	ft_check_symb(t_game *game, char *mapi)
+void	ft_valid_map(t_game *game)
 {
-	int c;
-
-	c = 0;
-	while (mapi[c])
+	game->i = 0;
+	while (game->i < game->height)
 	{
-		if (str_char("01CEP", mapi[c]) == 0)
+		game->j = 0;
+		while (game->map[game->i][game->j])
 		{
-			write(1, "map valid error", 15);
-			exit(1);
+			if (game->map[game->i][game->j] == 'P')
+			{
+				game->pos_y = game->i;
+				game->pos_x = game->j;
+				game->map_p = game->map_p + 1;
+				game->map[game->i][game->j] = '0';
+			}
+			else if (game->map[game->i][game->j] == 'C')
+				game->map_c = game->map_c + 1;
+			else if (game->map[game->i][game->j] == 'E')
+				game->map_e = game->map_e + 1;
+			else if (str_char("01CPE", game->map[game->i][game->j]) == 0)
+				ft_errors(6);
+			game->j++;
 		}
-		if (mapi[c] == 'P')
-		{
-			game->pos_x = c;
-		}
-
-		ft_count_epc(mapi[c],game);
-		c++;
+		game->i++;
 	}
+	ft_check_up_down(game);
 }
 
 void	ft_free_array(char **temp)

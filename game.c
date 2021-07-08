@@ -8,9 +8,11 @@ void	ft_start_game(t_game *game)
 	ft_create_xpm_g(&game->xpm_grass, game);
 	ft_create_xpm_e(&game->xpm_exit, game);
 	game->win = mlx_new_window(game->mlx, game->width * 32,
-							   game->height * 32, "SO_LONG");
+			game->height *32, "SO_LONG");
 	mlx_hook(game->win, 2, 1L << 0, key_hook, game);
 	mlx_hook(game->win, 33, 1L << 5, end_game, game);
+	game->count_coins = 0;
+	game->p_mov = 0;
 	mlx_loop_hook(game->mlx, display2, game);
 	mlx_loop(game->mlx);
 }
@@ -24,44 +26,15 @@ int	display2(t_game *game)
 		while (game->j < game->width)
 		{
 			if (game->map[game->i][game->j] == '1')
-				ft_put_wall_img(&game->xpm_wall, game, game->j, game->i);
+				ft_put_wall_img(&game->xpm_wall, &game->xpm_grass, game);
 			else if (game->map[game->i][game->j] == '0')
 				ft_put_grass_img(&game->xpm_grass, game, game->j, game->i);
 			else if (game->map[game->i][game->j] == 'E')
-				ft_put_exit_img(&game->xpm_exit, game, game->j, game->i);
+				ft_put_exit_img(&game->xpm_exit, &game->xpm_grass, game);
 			else if (game->map[game->i][game->j] == 'C')
-				ft_put_coin_img(&game->xpm_coin, game, game->j, game->i);
-			else if (game->map[game->i][game->j] == 'P')
-				ft_put_player_img(&game->xpm_player, game, game->j, game->i);
-			game->j = game->j + 1;
-		}
-		game->i = game->i + 1;
-	}
-	return (1);
-}
-int	display(t_game *game)
-{
-	game->i = 0;
-	while (game->i < game->height)
-	{
-		game->j = 0;
-		while (game->j < game->width)
-		{
-			if (game->map[game->i][game->j] == '1')
-				mlx_put_image_to_window(game->mlx, game->win, game->xpm_wall.img, game->i *
-																				  32, game->j * 32);
-			else if (game->map[game->i][game->j] == '0')
-				mlx_put_image_to_window(game->mlx, game->win, game->xpm_grass.img, game->i *
-																				   32, game->j * 32);
-			else if (game->map[game->i][game->j] == 'E')
-				mlx_put_image_to_window(game->mlx, game->win, game->xpm_exit.img, game->i *
-																				  32, game->j * 32);
-			else if (game->map[game->i][game->j] == 'C')
-				mlx_put_image_to_window(game->mlx, game->win, game->xpm_coin.img, game->i *
-																				  32, game->j * 32);
-			else if (game->map[game->i][game->j] == 'P')
-				mlx_put_image_to_window(game->mlx, game->win, game->xpm_player.img, game->i *
-																					32, game->j * 32);
+				ft_put_coin_img(&game->xpm_coin, &game->xpm_grass, game);
+			ft_put_player_img(&game->xpm_player, game, game->pos_x,
+				game->pos_y);
 			game->j = game->j + 1;
 		}
 		game->i = game->i + 1;
@@ -83,4 +56,3 @@ int	key_hook(int code, t_game *game)
 		ft_press_d(game);
 	return (code);
 }
-

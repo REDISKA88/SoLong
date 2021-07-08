@@ -1,7 +1,7 @@
 #include "so_long.h"
 void	check_size(t_game *game)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	game->width = ft_stlen(game->map[i]);
@@ -17,72 +17,50 @@ void	check_size(t_game *game)
 	}
 }
 
-void	ft_count_epc(char map, t_game *game)
-{
-	if (map == 'E')
-		game->map_e = game->map_e + 1;
-	if (map == 'P')
-		game->map_p = game->map_p + 1;
-	if (map == 'C')
-		game->map_c = game->map_c + 1;
-}
-
 void	ft_check_epc(t_game *game)
 {
 	if (game->map_p != 1)
 	{
-		write(1, "player must be One", 18);
-		ft_free_array(game->map);
+		write(1, "player must be one", 18);
 		exit(1);
 	}
-	if (game->map_e  < 1)
+	if (game->map_e < 1)
 	{
-		write(1, "Portal Gde", 10);
-		ft_free_array(game->map);
+		write(1, "Portal error", 12);
 		exit(1);
 	}
 	if (game->map_c < 1)
 	{
-		write(1, "gde money", 9);
-		ft_free_array(game->map);
+		write(1, "coins error", 11);
 		exit(1);
 	}
 }
 
 void	ft_border_checker(t_game *game)
 {
-	int i;
-	int j;
+	int	i;
 
 	i = 0;
-	j = 0;
 	while (i < game->height)
 	{
-		if (game->map[i][0] == '1' && game->map[i][ft_stlen(game->map[i]) - 1] == '1')
+		if (game->map[i][0] == '1' &&
+		game->map[i][ft_stlen(game->map[i]) - 1] == '1')
 			i++;
 		else
 			ft_errors(4);
 	}
-	i = 0;
-	while (game->map[i][j] != '\0')
-	{
-		if (game->map[i][j] != '1')
-			ft_errors(5);
-		j++;
-	}
 }
 
-void	ft_check_up_bord(t_game *game)
+void	ft_check_up_down(t_game *game)
 {
-	int i;
-	int j;
+	int	i;
 
-	j = 0;
-	i = game->height;
-	while (game->map[i][j])
-	{
-		if (game->map[i][j] != '1')
-			ft_errors(5);
-		j++;
-	}
+	i = game->height - 1;
+	if (str_char(game->map[0], '1') == 0)
+		ft_errors(5);
+	if (str_char(game->map[i], '1') == 0)
+		ft_errors(5);
+	ft_border_checker(game);
+	check_size(game);
+	ft_check_epc(game);
 }
